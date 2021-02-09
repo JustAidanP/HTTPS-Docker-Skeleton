@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+    nginx:
+        build:
+           context: nginx
+        volumes:
+            - ssl_letsencrypt:/etc/letsencrypt
+            - ssl_dhparam/dhparam.pem:/etc/nginx/dhparam.pem
+            - ssl_renew_www:/var/www/_letsencrypt
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: unless-stopped
+
+    dhparam:
+        build:
+            context: ./dhparam
+        volumes:
+            - ssl_dhparam:/dhparam
+
+    certbot-initial:
+        image: certbot/certbot
+        volumes:
+            - ssl_letsencrypt:/etc/letsencrypt
+        ports:
+            - "80:80"
+
+        command: certonly --standalone --email development@acme.com --agree-tos --no-eff-email --force-renewal -d acme.com
+
+    certbot-renew:
+        image: certbot/certbot
+        volumes:
+            - ssl_letsencrypt:/etc/letsencrypt
+            - ssl_renew_www:/var/www/_letsencrypt
+        command: renew --webroot --webroot-path=/var/www/_letsencrypt
+
+volumes:   
+    ssl_letsencrypt:
+    ssl_dhparam:
+    ssl_renew_www:
