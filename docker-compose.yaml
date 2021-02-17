@@ -13,8 +13,7 @@ services:
         restart: unless-stopped
 
     dhparam:
-        build:
-            context: ./dhparam
+        image: justaidanp/gen-dhparam
         volumes:
             - ssl_dhparam:/dhparam
 
