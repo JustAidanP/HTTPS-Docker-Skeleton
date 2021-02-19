@@ -4,7 +4,7 @@ services:
         build:
            context: nginx
         volumes:
-            - ssl_dhparam/dhparam.pem:/etc/nginx/dhparam.pem
+            - ssl_dhparam:/etc/ssl/certs
             - ssl_letsencrypt:/etc/letsencrypt
             - ssl_letsencrypt_www:/var/www/_letsencrypt
         ports:
