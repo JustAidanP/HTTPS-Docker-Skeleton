@@ -7,6 +7,9 @@ First, change `acme.com` and `development@acme.com` to your website and certific
 To setup ssl for the first time on a server, run `docker-compose up certbot-initial dhparam`. This will setup the initial certificates and Diffie Helman parameters, 
 these are stored in the volumes `ssl_letsencrypt` and `ssl_dhparam`, these shouldn't be deleted.
 
+### Note
+When changes are made to nginx.conf, you need to make sure that `ssl_dhparam` points to `/etc/ssl/certs/dhparam.pem`
+
 ## Certificate renewal
 Certificate renewal expects the nginx webserver to be running. Run `certbot-renew`, this will perform a webroot certificate challenge using the volume
 `ssl_renew_www`, the nginx webserver routes the acme-challenge to that route.
